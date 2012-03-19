@@ -18,12 +18,16 @@
 
 package com.guntherdw.bukkit.SnowBalls;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.guntherdw.bukkit.tweakcraft.TweakcraftUtils;
 
 import java.util.Random;
 
@@ -61,7 +65,16 @@ public class SnowBallsInventory implements Listener {
         plugin.getServer().broadcastMessage("fueltime:" + event.getBurnTime()); */
 
     }
-
+    
+    @EventHandler
+    public void onBlockCraft(CraftItemEvent ev){
+        if(plugin.getRecipes().contains(ev.getRecipe())){
+            //its a snowball event
+            if(plugin.getRecepieDisabledWorlds().contains(ev.getWhoClicked().getLocation().getWorld())){
+                ev.setCancelled(true);                
+            }
+        }
+    }
     @EventHandler
     public void onFurnaceSmelt(FurnaceSmeltEvent event) {
         if (event.isCancelled()) return;

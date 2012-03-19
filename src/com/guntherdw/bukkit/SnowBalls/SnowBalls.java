@@ -19,8 +19,11 @@
 package com.guntherdw.bukkit.SnowBalls;
 
 import com.sk89q.worldedit.blocks.ItemType;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -59,6 +62,7 @@ public class SnowBalls extends JavaPlugin {
     protected static Set<ShapelessRecipe> shapelessRecipes;
     protected static Set<ShapedRecipe> shapedRecipes;
     protected static Map<Integer, Integer> extraids;
+    private List<World> noRecepieWorlds;
     private PluginDescriptionFile pdffile;
     protected boolean enableInfiniteLava = false;
     protected boolean enableMaxStack = false;
@@ -154,6 +158,18 @@ public class SnowBalls extends JavaPlugin {
                 }
             }
         }
+        
+        List<String> disabledWorldsList = (List<String>) this.getConfig().getList("disabled_worlds");
+        
+        for(String world : disabledWorldsList){
+            World w = Bukkit.getWorld(world);
+            
+            if(w != null){
+                noRecepieWorlds.add(w);
+            }else{
+                log.warning(String.format("Could not load world %s into the disabled world list, potentially enabling custom recepies in that world", w));
+            }
+        }
 
         // if(enableInfiniteLava)
 
@@ -215,6 +231,9 @@ public class SnowBalls extends JavaPlugin {
         }
     }
 
+    public List<World> getRecepieDisabledWorlds(){
+        return noRecepieWorlds;
+    }
 
     public List<String> getRecipes() {
         List<String> recipes = new ArrayList<String>();
