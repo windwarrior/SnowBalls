@@ -62,7 +62,7 @@ public class SnowBalls extends JavaPlugin {
     protected static Set<ShapelessRecipe> shapelessRecipes;
     protected static Set<ShapedRecipe> shapedRecipes;
     protected static Map<Integer, Integer> extraids;
-    private List<World> noRecepieWorlds;
+    private List<World> noRecepieWorlds = new ArrayList<World>();
     private PluginDescriptionFile pdffile;
     protected boolean enableInfiniteLava = false;
     protected boolean enableMaxStack = false;
@@ -295,9 +295,11 @@ public class SnowBalls extends JavaPlugin {
 
 
         s =/* CUIPattern + */ "i";
-        for (Integer i : extraids.keySet()) {
-            s += "|" + i + ";" + extraids.get(i);
-            x++;
+        if(extraids != null){
+            for (Integer i : extraids.keySet()) {
+                s += "|" + i + ";" + extraids.get(i);
+                x++;
+            }
         }
         if (x > 0)
             recipes.add(s);

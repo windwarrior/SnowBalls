@@ -7,6 +7,8 @@ hacks:
     inflava: true
     maxstack: true
 
+disabled_worlds: [ world_nether ]
+
 recipes:
     shaped:
         web:
